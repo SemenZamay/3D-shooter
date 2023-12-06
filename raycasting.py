@@ -103,7 +103,7 @@ class RayCasting:
 
             # ray casting result
             self.ray_casting_result.append((depth, proj_height, texture, offset))
-            ray_angle += DEFTA_ANGLE
+            ray_angle += DELTA_ANGLE
 
     def update(self):
         self.ray_cast()
