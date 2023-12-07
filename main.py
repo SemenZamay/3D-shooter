@@ -9,6 +9,7 @@ from sprite_object import *
 from object_handler import *
 from weapon import *
 from sound import *
+from pathfinding import *
 
 class Game:
     def __init__(self):
@@ -17,6 +18,9 @@ class Game:
         self.screen = pg.display.set_mode(RES)
         self.clock = pg.time.Clock()
         self.delta_time = 1
+        self.global_trigger = False
+        self.global_evet = pg.USEREVENT + 0
+        pg.time.set_timer(self.global_evet, 40)
         self.new_game()
 
     def new_game(self):
@@ -27,6 +31,7 @@ class Game:
         self.object_handler = ObjectHandler(self)
         self.weapon = Weapon(self)
         self.sound = Sound(self)
+        self.pathfinding = PathFinding(self)
 
     def update(self):
         self.player.update()
@@ -39,6 +44,7 @@ class Game:
 
     def draw(self):
         self.object_renderer.draw()
+        # self.screen.fill('black')
         self.weapon.draw()
         # self.map.draw()
         # self.player.draw()
@@ -48,6 +54,8 @@ class Game:
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 pg.quit()
                 sys.exit()
+            elif event.type == self.global_evet:
+                self.global_trigger = True
             self.player.single_fire_event(event)
 
     def run(self):
